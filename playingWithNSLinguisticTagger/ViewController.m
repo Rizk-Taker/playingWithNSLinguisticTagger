@@ -76,17 +76,25 @@
                          options:options
                       usingBlock:^(NSString *tag, NSRange tokenRange, NSRange sentenceRange, BOOL *stop)
      {
-         NSString *aToken = [string substringWithRange:tokenRange];
-//         NSLog(@"%@ : %@", aToken, tag);
-         NSInteger i = 0;
-         while (i != nil)  {
-             if ([tag isEqualToString:[self negativeWords][i]]) {
+         NSString *token = [string substringWithRange:tokenRange];
+//
+         NSMutableDictionary *tags = [[NSMutableDictionary alloc] init];
+//         if (token) {
+//
+//         }
+         if (tag != nil) {
+             NSLog(@"%@ : %@", token, tag);
+             [tags setValue:tag forKey:token];
+         }
+         for (id key in tags) {
+             if ([[tags objectForKey:key] isEqualToString:[self negativeWords][0]]) {
                  negativeWordCounter++;
-//                 NSLog(@"Inside of block %i", negativeWordCounter);
+                 NSLog(@"Inside of block %i", negativeWordCounter);
              }
          }
+  
      }];
-//    NSLog(@"Outside of block %i", negativeWordCounter);
+    NSLog(@"Outside of block %i", negativeWordCounter);
     return negativeWordCounter;
 }
 
@@ -117,7 +125,7 @@
     //    Won’t
     //    Can’t
     //    Don’t
-    return @[@"Clinton"];
+    return @[@"clinton"];
 }
 
 - (NSURL *) loadWebviewWithString:(NSString *)string andWebview:(UIWebView *)webView
