@@ -15,6 +15,10 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *article1TF;
 @property (weak, nonatomic) IBOutlet UITextField *article2TF;
+@property (weak, nonatomic) IBOutlet UILabel *outcomeLabel;
+- (IBAction)article1Tapped:(id)sender;
+- (IBAction)article2Tapped:(id)sender;
+- (IBAction)analyzeTapped:(id)sender;
 
 
 @end
@@ -23,28 +27,49 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-//    [self setUpWebViews];
+ 
+}
 
+- (void) compareNegativeWords
+{
+    NSString *article1 = [self getHTMLStringVersionOfArticleWithURL:[NSURL URLWithString:self.article1TF.text]];
+    NSString *article2 = [self getHTMLStringVersionOfArticleWithURL:[NSURL URLWithString:self.article2TF.text]];
+    
+    NSInteger article1Score = [self processNaturalLanguageWithString:article1];
+    NSInteger article2Score = [self processNaturalLanguageWithString:article2];
+    
+    NSInteger difference = abs(article1Score - article2Score);
+    
+    if (article1Score > article2Score) {
+        self.outcomeLabel.hidden = NO;
+        NSString *outcome1 = [NSString stringWithFormat:@"Negative sentiment is higher for the first article by %li points.", difference];
+        [self.outcomeLabel setText:outcome1];
+    }
+    else if (article2Score > article1Score)
+    {
+        self.outcomeLabel.hidden = NO;
+        NSString *outcome2 = [NSString stringWithFormat:@"Negative sentiment is higher for the second article by %li points.", difference];
+        [self.outcomeLabel setText:outcome2];
+    }
+    
+    else if (article1Score == article2Score)
+    {
+        self.outcomeLabel.hidden = NO;
+        NSString *outcome3 = [NSString stringWithFormat:@"Negative sentiment score is the same."];
+        [self.outcomeLabel setText:outcome3];
+    }
     
 }
 
--(void)viewWillAppear:(BOOL)animated {
-    NSString *string = @"He used to like swimming";
+- (NSInteger) processNaturalLanguageWithString: (NSString *)string
+{
     NSLinguisticTaggerOptions options = NSLinguisticTaggerOmitWhitespace | NSLinguisticTaggerOmitPunctuation | NSLinguisticTaggerJoinNames;
     
     NSLinguisticTagger *tagger = [[NSLinguisticTagger alloc] initWithTagSchemes: [NSLinguisticTagger availableTagSchemesForLanguage:@"en"] options:options];
     
     tagger.string = string;
     
-    [tagger enumerateTagsInRange:NSMakeRange(0, [string length])
-                          scheme:NSLinguisticTagSchemeNameTypeOrLexicalClass
-                         options:options
-                      usingBlock:^(NSString *tag, NSRange tokenRange, NSRange sentenceRange, BOOL *stop)
-     {
-         NSString *token = [string substringWithRange:tokenRange];
-         
-     }];
+    __block NSInteger negativeWordCounter = 0;
     
     [tagger enumerateTagsInRange:NSMakeRange(0, [string length])
                           scheme:NSLinguisticTagSchemeLemma
@@ -52,27 +77,17 @@
                       usingBlock:^(NSString *tag, NSRange tokenRange, NSRange sentenceRange, BOOL *stop)
      {
          NSString *aToken = [string substringWithRange:tokenRange];
-         NSLog(@"%@ : %@", aToken, tag);
+//         NSLog(@"%@ : %@", aToken, tag);
+         NSInteger i = 0;
+         while (i != nil)  {
+             if ([tag isEqualToString:[self negativeWords][i]]) {
+                 negativeWordCounter++;
+//                 NSLog(@"Inside of block %i", negativeWordCounter);
+             }
+         }
      }];
-}
-
-- (void) processNaturalLanguageWithString: (NSString *)string
-{
-    NSLinguisticTaggerOptions options = NSLinguisticTaggerOmitWhitespace | NSLinguisticTaggerOmitPunctuation | NSLinguisticTaggerJoinNames;
-    
-    NSLinguisticTagger *tagger = [[NSLinguisticTagger alloc] initWithTagSchemes: @[[NSLinguisticTagger availableTagSchemesForLanguage:@"en"], NSLinguisticTagSchemeLemma] options:options];
-    
-    tagger.string = string;
-    
-    [tagger enumerateTagsInRange:NSMakeRange(0, [string length])
-                          scheme:NSLinguisticTagSchemeNameTypeOrLexicalClass
-                         options:options
-                      usingBlock:^(NSString *tag, NSRange tokenRange, NSRange sentenceRange, BOOL *stop) {
-                          
-                          NSString *token = [string substringWithRange:tokenRange];
-                          
-                          NSLog(@"%@: %@", token, tag);
-                      }];
+//    NSLog(@"Outside of block %i", negativeWordCounter);
+    return negativeWordCounter;
 }
 
 - (NSArray *) negativeWords
@@ -102,43 +117,41 @@
     //    Won’t
     //    Can’t
     //    Don’t
-    return @[@"scrutinize", @"dishearten", @"bad",  ];
+    return @[@"Clinton"];
 }
 
-- (void)setUpWebViews {
-//    
-//    self.article1WV.delegate = self;
-//    self.article2WV.delegate = self;
-    
-    [self getArticleWithString:@"http://google.com" andWebview:self.article1WV];
-    [self getArticleWithString:@"http://yahoo.com" andWebview:self.article2WV];
-}
-
-- (void)getArticleWithString:(NSString *)string andWebview:(UIWebView *)webView {
+- (NSURL *) loadWebviewWithString:(NSString *)string andWebview:(UIWebView *)webView
+{
     NSString *urlString = string;
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [webView loadRequest:request];
+    return url;
 }
 
-
-
-- (NSString *) getHTMLStringVersionOfArticleWithString: (NSString *)string {
-    NSURL *googleURL = [NSURL URLWithString:string];
+- (NSString *) getHTMLStringVersionOfArticleWithURL: (NSURL *)url {
     NSError *error;
-    NSString *htmlPage = [NSString stringWithContentsOfURL:googleURL
+    NSString *htmlPage = [NSString stringWithContentsOfURL:url
                                                   encoding:NSASCIIStringEncoding
                                                      error:&error];
     
     return htmlPage;
 }
 
+- (IBAction) article1Tapped:(id)sender
+{
+    [self loadWebviewWithString:self.article1TF.text andWebview:self.article1WV];
+}
 
+- (IBAction) article2Tapped:(id)sender
+{
+    [self loadWebviewWithString:self.article2TF.text andWebview:self.article2WV];
+}
 
-
-
-
-
+- (IBAction)analyzeTapped:(id)sender
+{
+    [self compareNegativeWords];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
