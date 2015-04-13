@@ -16,12 +16,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="http://www.something.com" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OOM-BC-Iqa">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="http://www.something.com" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OOM-BC-Iqa">
                                 <rect key="frame" x="65" y="35" width="337" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="38" y="29" width="283" height="30"/>
+                                    <rect key="frame" x="97" y="29" width="182" height="30"/>
                                 </variation>
                             </textField>
                             <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="37d-EH-9dZ">
@@ -38,25 +38,13 @@
                                     <rect key="frame" x="0.0" y="316" width="377" height="197"/>
                                 </variation>
                             </webView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3gM-PU-7Sd">
-                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <state key="normal" title="Load">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="329" y="28" width="35" height="30"/>
-                                </variation>
-                                <connections>
-                                    <action selector="article1Tapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fKc-x4-0iP"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Sl-Mf-5Uh">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <state key="normal" title="Load">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="329" y="285" width="35" height="30"/>
+                                    <rect key="frame" x="304" y="285" width="35" height="30"/>
                                 </variation>
                                 <connections>
                                     <action selector="article2Tapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="oUQ-Zf-Htd"/>
@@ -74,39 +62,62 @@
                                     <action selector="analyzeTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kR9-0X-dzE"/>
                                 </connections>
                             </button>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="00B-1E-htB">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="http://www.something.com" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Emb-Cq-Csc">
+                                <rect key="frame" x="65" y="245" width="151" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="97" y="286" width="182" height="30"/>
+                                </variation>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Article 1" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iPA-s6-7ay">
                                 <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="16" y="559" width="361" height="21"/>
+                                    <rect key="frame" x="18" y="31" width="63" height="21"/>
                                 </variation>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="http://www.something.com" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Emb-Cq-Csc">
-                                <rect key="frame" x="65" y="245" width="151" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Article 2" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dtf-R4-50d">
+                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
                                 <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="38" y="285" width="283" height="30"/>
+                                    <rect key="frame" x="18" y="289" width="63" height="21"/>
                                 </variation>
-                            </textField>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3gM-PU-7Sd">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="Load">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="304" y="29" width="35" height="30"/>
+                                </variation>
+                                <connections>
+                                    <action selector="article1Tapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fKc-x4-0iP"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <variation key="default">
                             <mask key="subviews">
-                                <exclude reference="3gM-PU-7Sd"/>
                                 <exclude reference="2Sl-Mf-5Uh"/>
                                 <exclude reference="F4k-np-bJ1"/>
-                                <exclude reference="00B-1E-htB"/>
+                                <exclude reference="iPA-s6-7ay"/>
+                                <exclude reference="Dtf-R4-50d"/>
+                                <exclude reference="3gM-PU-7Sd"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="subviews">
-                                <include reference="3gM-PU-7Sd"/>
                                 <include reference="2Sl-Mf-5Uh"/>
                                 <include reference="F4k-np-bJ1"/>
-                                <include reference="00B-1E-htB"/>
+                                <include reference="iPA-s6-7ay"/>
+                                <include reference="Dtf-R4-50d"/>
+                                <include reference="3gM-PU-7Sd"/>
                             </mask>
                         </variation>
                     </view>
@@ -115,7 +126,6 @@
                         <outlet property="article1WV" destination="37d-EH-9dZ" id="VYg-EJ-bzc"/>
                         <outlet property="article2TF" destination="Emb-Cq-Csc" id="WMa-2b-Pqa"/>
                         <outlet property="article2WV" destination="Tln-1U-XpN" id="uhZ-9y-EV0"/>
-                        <outlet property="outcomeLabel" destination="00B-1E-htB" id="r69-dh-Tp0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

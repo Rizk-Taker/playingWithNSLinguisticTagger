@@ -15,7 +15,6 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *article1TF;
 @property (weak, nonatomic) IBOutlet UITextField *article2TF;
-@property (weak, nonatomic) IBOutlet UILabel *outcomeLabel;
 - (IBAction)article1Tapped:(id)sender;
 - (IBAction)article2Tapped:(id)sender;
 - (IBAction)analyzeTapped:(id)sender;
@@ -27,7 +26,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
- 
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"How it works" message:@"This project allows you to load two web pages (preferrably articles) and compares the difference in the amount of negative words that appear in each one, creating a 'Negative Sentiment Score'." delegate:self cancelButtonTitle:@"Got it" otherButtonTitles:nil];
+    [alert show];
 }
 
 - (void) compareNegativeWords
@@ -40,24 +40,25 @@
     
     NSInteger difference = abs(article1Score - article2Score);
     
+ 
+    
+    NSString *outcome;
+    
     if (article1Score > article2Score) {
-        self.outcomeLabel.hidden = NO;
-        NSString *outcome1 = [NSString stringWithFormat:@"Negative sentiment is higher for the first article by %li points.", difference];
-        [self.outcomeLabel setText:outcome1];
+        outcome = [NSString stringWithFormat:@"Negative sentiment is higher for the first article by %li points.", difference];
     }
     else if (article2Score > article1Score)
     {
-        self.outcomeLabel.hidden = NO;
-        NSString *outcome2 = [NSString stringWithFormat:@"Negative sentiment is higher for the second article by %li points.", difference];
-        [self.outcomeLabel setText:outcome2];
+        outcome = [NSString stringWithFormat:@"Negative sentiment is higher for the second article by %li points.", difference];
     }
     
     else if (article1Score == article2Score)
     {
-        self.outcomeLabel.hidden = NO;
-        NSString *outcome3 = [NSString stringWithFormat:@"Negative sentiment score is the same."];
-        [self.outcomeLabel setText:outcome3];
+        outcome = [NSString stringWithFormat:@"Negative sentiment score is the same."];
     }
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:outcome delegate:self cancelButtonTitle:@"Word" otherButtonTitles:nil];
+    [alert show];
     
 }
 
@@ -77,55 +78,61 @@
                       usingBlock:^(NSString *tag, NSRange tokenRange, NSRange sentenceRange, BOOL *stop)
      {
          NSString *token = [string substringWithRange:tokenRange];
-//
+
          NSMutableDictionary *tags = [[NSMutableDictionary alloc] init];
-//         if (token) {
-//
-//         }
-         if (tag != nil) {
-             NSLog(@"%@ : %@", token, tag);
+         
+         if (tag != nil)
+         {
+//             NSLog(@"%@ : %@", token, tag);
              [tags setValue:tag forKey:token];
          }
-         for (id key in tags) {
-             if ([[tags objectForKey:key] isEqualToString:[self negativeWords][0]]) {
-                 negativeWordCounter++;
-                 NSLog(@"Inside of block %i", negativeWordCounter);
+         
+         for (id key in tags)
+         {
+             for (NSInteger i = 0; i < [[self negativeWords] count]; i++)
+             {
+                 if ([[tags objectForKey:key] isEqualToString:[self negativeWords][i]])
+                 {
+                     negativeWordCounter++;
+//                     NSLog(@"Inside of block %i", negativeWordCounter);
+                 }
              }
          }
-  
      }];
-    NSLog(@"Outside of block %i", negativeWordCounter);
+    
+//    NSLog(@"Outside of block %i", negativeWordCounter);
+    
     return negativeWordCounter;
 }
 
 - (NSArray *) negativeWords
 {
-    //    No
-    //    Not
-    //    None
-    //    No one
-    //    Nobody
-    //    Nothing
-    //    Neither
-    //    Nowhere
-    //    Never
-    //    Negative Adverbs:
-    //
-    //    Hardly
-    //    Scarcely
-    //    Barely
-    //    Negative verbs:
-    //
-    //    Doesn’t
-    //    Isn’t
-    //    Wasn’t
-    //    Shouldn’t
-    //    Wouldn’t
-    //    Couldn’t
-    //    Won’t
-    //    Can’t
-    //    Don’t
-    return @[@"clinton"];
+//        No
+//        Not
+//        None
+//        No one
+//        Nobody
+//        Nothing
+//        Neither
+//        Nowhere
+//        Never
+//        Negative Adverbs:
+//    
+//        Hardly
+//        Scarcely
+//        Barely
+//        Negative verbs:
+//    
+//        Doesn’t
+//        Isn’t
+//        Wasn’t
+//        Shouldn’t
+//        Wouldn’t
+//        Couldn’t
+//        Won’t
+//        Can’t
+//        Don’t
+    return @[@"no", @"not", @"none", @"nobody", @"nothing", @"nowhere", @"never", @"hardly", @"scrutinize", @"bare", @"hard", @"is not"];
 }
 
 - (NSURL *) loadWebviewWithString:(NSString *)string andWebview:(UIWebView *)webView
@@ -149,11 +156,13 @@
 - (IBAction) article1Tapped:(id)sender
 {
     [self loadWebviewWithString:self.article1TF.text andWebview:self.article1WV];
+    [self.view endEditing:YES];
 }
 
 - (IBAction) article2Tapped:(id)sender
 {
     [self loadWebviewWithString:self.article2TF.text andWebview:self.article2WV];
+    [self.view endEditing:YES];
 }
 
 - (IBAction)analyzeTapped:(id)sender
