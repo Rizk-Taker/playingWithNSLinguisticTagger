@@ -137,31 +137,15 @@
 
 - (IBAction) article1Tapped:(id)sender
 {
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-        [self loadWebviewWithString:self.article1TF.text andWebview:self.article1WV];
-        
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
-        });
-    });
-    
+    [self loadWebviewWithString:self.article1TF.text andWebview:self.article1WV];
     
     [self.view endEditing:YES];
 }
 
 - (IBAction) article2Tapped:(id)sender
 {
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-        [self loadWebviewWithString:self.article2TF.text andWebview:self.article2WV];
-
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
-        });
-    });
+    [self loadWebviewWithString:self.article2TF.text andWebview:self.article2WV];
+    
     [self.view endEditing:YES];
 }
 
