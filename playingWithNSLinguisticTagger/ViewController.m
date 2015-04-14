@@ -7,8 +7,9 @@
 //
 
 #import "ViewController.h"
+#import <MBProgressHUD.h>
 
-@interface ViewController ()
+@interface ViewController () <MBProgressHUDDelegate>
 
 @property (weak, nonatomic) IBOutlet UIWebView *article1WV;
 @property (weak, nonatomic) IBOutlet UIWebView *article2WV;
@@ -28,6 +29,8 @@
     [super viewDidLoad];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"How it works" message:@"This project allows you to load two web pages (preferrably articles) and compares the difference in the amount of negative words that appear in each one, creating a 'Negative Sentiment Score'." delegate:self cancelButtonTitle:@"Got it" otherButtonTitles:nil];
     [alert show];
+    
+
 }
 
 - (void) compareNegativeWords
@@ -134,19 +137,45 @@
 
 - (IBAction) article1Tapped:(id)sender
 {
-    [self loadWebviewWithString:self.article1TF.text andWebview:self.article1WV];
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        [self loadWebviewWithString:self.article1TF.text andWebview:self.article1WV];
+        
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        });
+    });
+    
+    
     [self.view endEditing:YES];
 }
 
 - (IBAction) article2Tapped:(id)sender
 {
-    [self loadWebviewWithString:self.article2TF.text andWebview:self.article2WV];
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        [self loadWebviewWithString:self.article2TF.text andWebview:self.article2WV];
+
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        });
+    });
     [self.view endEditing:YES];
 }
 
+
 - (IBAction)analyzeTapped:(id)sender
 {
-    [self compareNegativeWords];
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        [self compareNegativeWords];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        });
+    });
 }
 
 - (void)didReceiveMemoryWarning {
