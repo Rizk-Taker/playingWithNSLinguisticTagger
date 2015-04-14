@@ -16,7 +16,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="http://www.something.com" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OOM-BC-Iqa">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="http://www.usnews.com/opinion/mercedes-schlapp/2015/04/13/hillary-clintons-baggage-isnt-going-anywhere-in-2016" placeholder="http://www.something.com" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OOM-BC-Iqa">
                                 <rect key="frame" x="65" y="35" width="337" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -64,6 +64,7 @@
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="http://www.something.com" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Emb-Cq-Csc">
                                 <rect key="frame" x="65" y="245" width="151" height="30"/>
+                                <string key="text">http://www.usnews.com/opinion/blogs/lara-brown/2015/04/13/hillary-clintons-2016-announcement-video-shows-shes-her-own-worst-enemy</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <variation key="widthClass=compact" fixedFrame="YES">

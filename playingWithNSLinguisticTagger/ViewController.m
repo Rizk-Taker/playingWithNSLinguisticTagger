@@ -35,21 +35,21 @@
     NSString *article1 = [self getHTMLStringVersionOfArticleWithURL:[NSURL URLWithString:self.article1TF.text]];
     NSString *article2 = [self getHTMLStringVersionOfArticleWithURL:[NSURL URLWithString:self.article2TF.text]];
     
-    NSInteger article1Score = [self processNaturalLanguageWithString:article1];
-    NSInteger article2Score = [self processNaturalLanguageWithString:article2];
+    CGFloat article1Score = [self processNaturalLanguageWithString:article1];
+    CGFloat article2Score = [self processNaturalLanguageWithString:article2];
     
-    NSInteger difference = abs(article1Score - article2Score);
+    CGFloat difference = abs(article1Score - article2Score);
     
  
     
     NSString *outcome;
     
     if (article1Score > article2Score) {
-        outcome = [NSString stringWithFormat:@"Negative sentiment is higher for the first article by %li points.", difference];
+        outcome = [NSString stringWithFormat:@"Article 1's Negative Sentiment Score is %.1f points higher than Article 2's", difference];
     }
     else if (article2Score > article1Score)
     {
-        outcome = [NSString stringWithFormat:@"Negative sentiment is higher for the second article by %li points.", difference];
+        outcome = [NSString stringWithFormat:@"Article 2's Negative Sentiment Score is %.1f points higher than Article 1's", difference];
     }
     
     else if (article1Score == article2Score)
@@ -62,7 +62,7 @@
     
 }
 
-- (NSInteger) processNaturalLanguageWithString: (NSString *)string
+- (CGFloat)processNaturalLanguageWithString: (NSString *)string
 {
     NSLinguisticTaggerOptions options = NSLinguisticTaggerOmitWhitespace | NSLinguisticTaggerOmitPunctuation | NSLinguisticTaggerJoinNames;
     
@@ -71,6 +71,7 @@
     tagger.string = string;
     
     __block NSInteger negativeWordCounter = 0;
+    __block CGFloat negativeToTotalWordRatio = 0;
     
     [tagger enumerateTagsInRange:NSMakeRange(0, [string length])
                           scheme:NSLinguisticTagSchemeLemma
@@ -79,6 +80,7 @@
      {
          NSString *token = [string substringWithRange:tokenRange];
 
+         
          NSMutableDictionary *tags = [[NSMutableDictionary alloc] init];
          
          if (tag != nil)
@@ -86,52 +88,29 @@
 //             NSLog(@"%@ : %@", token, tag);
              [tags setValue:tag forKey:token];
          }
-         
+         NSMutableArray *totalWords = [[NSMutableArray alloc] init];
          for (id key in tags)
          {
+             [totalWords addObject:tags[token]];
+             
              for (NSInteger i = 0; i < [[self negativeWords] count]; i++)
              {
                  if ([[tags objectForKey:key] isEqualToString:[self negativeWords][i]])
                  {
                      negativeWordCounter++;
-//                     NSLog(@"Inside of block %i", negativeWordCounter);
+                     negativeToTotalWordRatio = negativeWordCounter/[totalWords count];
+                     
                  }
              }
          }
      }];
     
-//    NSLog(@"Outside of block %i", negativeWordCounter);
     
-    return negativeWordCounter;
+    return negativeToTotalWordRatio;
 }
 
 - (NSArray *) negativeWords
 {
-//        No
-//        Not
-//        None
-//        No one
-//        Nobody
-//        Nothing
-//        Neither
-//        Nowhere
-//        Never
-//        Negative Adverbs:
-//    
-//        Hardly
-//        Scarcely
-//        Barely
-//        Negative verbs:
-//    
-//        Doesn’t
-//        Isn’t
-//        Wasn’t
-//        Shouldn’t
-//        Wouldn’t
-//        Couldn’t
-//        Won’t
-//        Can’t
-//        Don’t
     return @[@"no", @"not", @"none", @"nobody", @"nothing", @"nowhere", @"never", @"hardly", @"scrutinize", @"bare", @"hard", @"is not"];
 }
 
