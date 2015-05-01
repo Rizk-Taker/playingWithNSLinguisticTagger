@@ -27,14 +27,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"How it works" message:@"This project allows you to load two web pages (preferrably articles) and compares the difference in the amount of negative words that appear in each one, creating a 'Negative Sentiment Score'." delegate:self cancelButtonTitle:@"Got it" otherButtonTitles:nil];
-    [alert show];
     
-
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"How it works" message:@"This project allows you to load two web pages (preferrably articles) and compares the difference in the amount of negative words that appear in each one, creating a 'Negative Sentiment Score'." delegate:self cancelButtonTitle:@"Got it" otherButtonTitles:nil];
+    
+    [alert show];
 }
 
-- (void) compareNegativeWords
-{
+- (void)compareNegativeWords {
+    
     NSString *article1 = [self getHTMLStringVersionOfArticleWithURL:[NSURL URLWithString:self.article1TF.text]];
     NSString *article2 = [self getHTMLStringVersionOfArticleWithURL:[NSURL URLWithString:self.article2TF.text]];
     
@@ -43,30 +43,26 @@
     
     CGFloat difference = abs(article1Score - article2Score);
     
- 
-    
     NSString *outcome;
     
     if (article1Score > article2Score) {
         outcome = [NSString stringWithFormat:@"Article 1's Negative Sentiment Score is %.1f points higher than Article 2's", difference];
-    }
-    else if (article2Score > article1Score)
-    {
+        
+    } else if (article2Score > article1Score) {
         outcome = [NSString stringWithFormat:@"Article 2's Negative Sentiment Score is %.1f points higher than Article 1's", difference];
-    }
-    
-    else if (article1Score == article2Score)
-    {
+        
+    } else if (article1Score == article2Score) {
         outcome = [NSString stringWithFormat:@"Negative sentiment score is the same."];
     }
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:outcome delegate:self cancelButtonTitle:@"Word" otherButtonTitles:nil];
+    
     [alert show];
     
 }
 
-- (CGFloat)processNaturalLanguageWithString: (NSString *)string
-{
+- (CGFloat)processNaturalLanguageWithString: (NSString *)string {
+    
     NSLinguisticTaggerOptions options = NSLinguisticTaggerOmitWhitespace | NSLinguisticTaggerOmitPunctuation | NSLinguisticTaggerJoinNames;
     
     NSLinguisticTagger *tagger = [[NSLinguisticTagger alloc] initWithTagSchemes: [NSLinguisticTagger availableTagSchemesForLanguage:@"en"] options:options];
@@ -86,28 +82,27 @@
          
          NSMutableDictionary *tags = [[NSMutableDictionary alloc] init];
          
-         if (tag != nil)
-         {
-//             NSLog(@"%@ : %@", token, tag);
+         if (tag != nil) {
+             
              [tags setValue:tag forKey:token];
          }
+         
          NSMutableArray *totalWords = [[NSMutableArray alloc] init];
-         for (id key in tags)
-         {
+         
+         for (id key in tags) {
+             
              [totalWords addObject:tags[token]];
              
-             for (NSInteger i = 0; i < [[self negativeWords] count]; i++)
-             {
-                 if ([[tags objectForKey:key] isEqualToString:[self negativeWords][i]])
-                 {
+             for (NSInteger i = 0; i < [[self negativeWords] count]; i++) {
+                 
+                 if ([[tags objectForKey:key] isEqualToString:[self negativeWords][i]]) {
+                     
                      negativeWordCounter++;
                      negativeToTotalWordRatio = negativeWordCounter/[totalWords count];
-                     
                  }
              }
          }
      }];
-    
     
     return negativeToTotalWordRatio;
 }
@@ -117,16 +112,18 @@
     return @[@"no", @"not", @"none", @"nobody", @"nothing", @"nowhere", @"never", @"hardly", @"scrutinize", @"bare", @"hard", @"is not"];
 }
 
-- (NSURL *) loadWebviewWithString:(NSString *)string andWebview:(UIWebView *)webView
-{
+- (NSURL *)loadWebviewWithString:(NSString *)string andWebview:(UIWebView *)webView {
+    
     NSString *urlString = string;
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [webView loadRequest:request];
+    
     return url;
 }
 
-- (NSString *) getHTMLStringVersionOfArticleWithURL: (NSURL *)url {
+- (NSString *)getHTMLStringVersionOfArticleWithURL: (NSURL *)url {
+    
     NSError *error;
     NSString *htmlPage = [NSString stringWithContentsOfURL:url
                                                   encoding:NSASCIIStringEncoding
@@ -135,23 +132,23 @@
     return htmlPage;
 }
 
-- (IBAction) article1Tapped:(id)sender
-{
+- (IBAction)article1Tapped:(id)sender {
+    
     [self loadWebviewWithString:self.article1TF.text andWebview:self.article1WV];
     
     [self.view endEditing:YES];
 }
 
-- (IBAction) article2Tapped:(id)sender
-{
+- (IBAction)article2Tapped:(id)sender {
+    
     [self loadWebviewWithString:self.article2TF.text andWebview:self.article2WV];
     
     [self.view endEditing:YES];
 }
 
 
-- (IBAction)analyzeTapped:(id)sender
-{
+- (IBAction)analyzeTapped:(id)sender {
+    
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         [self compareNegativeWords];
@@ -162,8 +159,4 @@
     });
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 @end
