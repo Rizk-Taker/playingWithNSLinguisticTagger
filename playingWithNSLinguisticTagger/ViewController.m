@@ -41,7 +41,7 @@
     CGFloat article1Score = [self processNaturalLanguageWithString:article1];
     CGFloat article2Score = [self processNaturalLanguageWithString:article2];
     
-    CGFloat difference = abs(article1Score - article2Score);
+    CGFloat difference = fabs(article1Score - article2Score);
     
     NSString *outcome;
     
